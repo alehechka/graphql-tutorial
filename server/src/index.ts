@@ -2,8 +2,11 @@ import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import mongoose from 'mongoose';
 import schema from './schema';
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors());
 
 const mongoPassword = 'DGbLEz9GTSDmJXh';
 const mongoDB = 'Cluster0';
