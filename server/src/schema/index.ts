@@ -1,4 +1,12 @@
-import { GraphQLID, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import {
+	GraphQLID,
+	GraphQLInt,
+	GraphQLList,
+	GraphQLNonNull,
+	GraphQLObjectType,
+	GraphQLSchema,
+	GraphQLString,
+} from 'graphql';
 import { AuthorModel, BookModel } from '../models';
 import { AuthorType } from './Author';
 import { BookType } from './Book';
@@ -26,7 +34,7 @@ const RootQuery = new GraphQLObjectType({
 			args: {
 				id: { type: GraphQLID },
 			},
-			resolve(parent, args) {
+			resolve(_, args) {
 				return AuthorModel.findById(args.id);
 			},
 		},
@@ -45,10 +53,10 @@ const Mutation = new GraphQLObjectType({
 		addAuthor: {
 			type: AuthorType,
 			args: {
-				name: { type: GraphQLString },
-				age: { type: GraphQLInt },
+				name: { type: new GraphQLNonNull(GraphQLString) },
+				age: { type: new GraphQLNonNull(GraphQLInt) },
 			},
-			async resolve(parent, args) {
+			async resolve(_, args) {
 				const author = new AuthorModel({
 					name: args.name,
 					age: args.age,
@@ -59,11 +67,11 @@ const Mutation = new GraphQLObjectType({
 		addBook: {
 			type: BookType,
 			args: {
-				name: { type: GraphQLString },
-				genre: { type: GraphQLString },
-				authorId: { type: GraphQLString },
+				name: { type: new GraphQLNonNull(GraphQLString) },
+				genre: { type: new GraphQLNonNull(GraphQLString) },
+				authorId: { type: new GraphQLNonNull(GraphQLID) },
 			},
-			async resolve(parent, args) {
+			async resolve(_, args) {
 				const book = new BookModel({
 					name: args.name,
 					genre: args.genre,
